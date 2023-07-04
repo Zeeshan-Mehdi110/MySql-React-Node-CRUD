@@ -35,7 +35,7 @@ const Books = () => {
       <div className="books">
         {books.map((book) => (
           <div key={book.id} className="book">
-            <img src={book.cover} alt="" />
+            <img src={`https://img.freepik.com/free-psd/3d-rendering-back-school-icon_23-2149589337.jpg?size=626&ext=jpg&ga=GA1.1.659312749.1688450167&semt=ais`} alt="img" />
             <h2>{book.title}</h2>
             <p>{book.desc}</p>
             <span>${book.price}</span>

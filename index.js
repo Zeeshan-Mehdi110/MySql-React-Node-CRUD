@@ -9,7 +9,7 @@ app.use(express.json());
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "Lamadev123",
+  password: "zeeshan51214",
   database: "test",
 });
 
@@ -29,47 +29,34 @@ app.get("/books", (req, res) => {
 });
 
 app.post("/books", (req, res) => {
-  const q = "INSERT INTO books(`title`, `desc`, `price`, `cover`) VALUES (?)";
-
-  const values = [
-    req.body.title,
-    req.body.desc,
-    req.body.price,
-    req.body.cover,
-  ];
-
-  db.query(q, [values], (err, data) => {
-    if (err) return res.send(err);
-    return res.json(data);
-  });
-});
-
-app.delete("/books/:id", (req, res) => {
-  const bookId = req.params.id;
-  const q = " DELETE FROM books WHERE id = ? ";
-
-  db.query(q, [bookId], (err, data) => {
-    if (err) return res.send(err);
-    return res.json(data);
-  });
-});
+  const sql = "insert into books(title,`desc`,price,cover) values(?)"
+  const { title, desc, price, cover } = req.body;
+  const values = [title, desc, price, cover]
+  db.query(sql, [values], (err, data) => {
+    if (err) return res.send(err)
+    return res.json(data)
+  })
+})
 
 app.put("/books/:id", (req, res) => {
-  const bookId = req.params.id;
-  const q = "UPDATE books SET `title`= ?, `desc`= ?, `price`= ?, `cover`= ? WHERE id = ?";
+  const bookId = req.params.id
+  const sql = "update books set `title` = ? , `desc`=? , `price`=? , `cover`=? where id = ?"
+  const { title, desc, price, cover } = req.body;
+  const values = [title, desc, price, cover]
+  db.query(sql, [...values, bookId], (err, data) => {
+    if (err) return res.send(err)
+    return res.json(data)
+  })
+})
 
-  const values = [
-    req.body.title,
-    req.body.desc,
-    req.body.price,
-    req.body.cover,
-  ];
-
-  db.query(q, [...values,bookId], (err, data) => {
+app.delete("/books/:id", (req, res) => {
+  const bookId = req.params.id
+  const sql = 'delete from books where id = ?'
+  db.query(sql, [bookId], (err, data) => {
     if (err) return res.send(err);
     return res.json(data);
-  });
-});
+  })
+})
 
 app.listen(8800, () => {
   console.log("Connected to backend.");
